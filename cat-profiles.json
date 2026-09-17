@@ -1,0 +1,104 @@
+{
+  "brands": [
+    {
+      "brand": "Yaesu",
+      "models": [
+        {
+          "model": "FT-891",
+          "CATprotocol": "ascii",
+          "civAddress": "",
+          "baud": 4800,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": "FA;"
+        },
+        {
+          "model": "FT-991A",
+          "CATprotocol": "ascii",
+          "civAddress": "",
+          "baud": 4800,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": "FA;"
+        }
+      ]
+    },
+    {
+      "brand": "Kenwood",
+      "models": [
+        {
+          "model": "TS-480HX/SAT",
+          "CATprotocol": "ascii",
+          "civAddress": "",
+          "baud": 9600,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": "ID;"
+        },
+        {
+          "model": "TS-590S / TS-590SG",
+          "CATprotocol": "ascii",
+          "civAddress": "",
+          "baud": 9600,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": "ID;"
+        }
+      ]
+    },
+    {
+      "brand": "Icom",
+      "models": [
+        {
+          "model": "IC-7000",
+          "CATprotocol": "civ",
+          "civAddress": "70",
+          "baud": 19200,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": ""
+        },
+        {
+          "model": "IC-7300",
+          "CATprotocol": "civ",
+          "civAddress": "94",
+          "baud": 19200,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": ""
+        },
+        {
+          "model": "IC-705",
+          "CATprotocol": "civ",
+          "civAddress": "A4",
+          "baud": 19200,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": ""
+        }
+      ]
+    },
+    {
+      "brand": "Baofeng",
+      "models": [
+        {
+          "model": "BF-F8HP Pro",
+          "CATprotocol": "none",
+          "civAddress": "",
+          "baud": 9600,
+          "dataBits": 8,
+          "stopBits": 1,
+          "pttMethod": "rts",
+          "testCommand": ""
+        }
+      ]
+    }
+  ]
+}

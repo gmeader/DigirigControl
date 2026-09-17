@@ -1,0 +1,227 @@
+<Window x:Class="DigiRigControlCenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DigiRig Control Center" Height="850" Width="800"
+        MinHeight="700" MinWidth="760" Background="{StaticResource WindowBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Margin="0,0,0,16">
+            <Button DockPanel.Dock="Right" Content="Refresh" Click="Refresh_Click" Width="100"/>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="DigiRig Control Center" FontSize="30" FontWeight="Bold" Margin="0,0,24,0"/>
+                    <RadioButton x:Name="LiteRadioButton" Content="DigiRig Lite" GroupName="DigiRigType" IsChecked="True" Margin="0,0,16,0" VerticalAlignment="Center" Checked="DigiRigType_Changed" Foreground="{StaticResource TextBrush}"/>
+                    <RadioButton x:Name="MobileRadioButton" Content="DigiRig Mobile" GroupName="DigiRigType" VerticalAlignment="Center" Checked="DigiRigType_Changed" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
+                <TextBlock Text="Windows audio dashboard" Foreground="{StaticResource MutedBrush}" FontSize="15"/>
+            </StackPanel>
+        </DockPanel>
+
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="DIGIRIG" FontSize="18" FontWeight="Bold"/>
+                    <TextBlock x:Name="DeviceStatus" Text="Checking…" FontSize="20" Margin="0,10,0,2"/>
+                    <TextBlock x:Name="PttDeviceText" Text="PTT HID: Checking…" Foreground="{StaticResource MutedBrush}"/>
+                    <TextBlock x:Name="ComPortDeviceStatus" Text="" Foreground="{StaticResource MutedBrush}" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18" Margin="8,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="RADIO PROFILE" FontSize="18" FontWeight="Bold"/>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                            <TextBlock Text="Brand" Foreground="{StaticResource MutedBrush}"/>
+                            <ComboBox x:Name="BrandComboBox"
+                                      Height="30"
+                                      Margin="0,4,0,0"
+                                      SelectionChanged="BrandComboBox_SelectionChanged"
+                                      Background="White">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate><TextBlock Text="{Binding}" Foreground="Black"/></DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                            <TextBlock Text="Radio" Foreground="{StaticResource MutedBrush}"/>
+                            <ComboBox x:Name="RadioComboBox"
+                                      Height="30"
+                                      Margin="0,4,0,0"
+                                      Background="White"
+                                      SelectionChanged="RadioComboBox_SelectionChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate><TextBlock Text="{Binding}" Foreground="Black"/></DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock x:Name="ProfileStatusText" Text="Loading cat-profiles.json…" Foreground="{StaticResource MutedBrush}" FontSize="12" Margin="0,7,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="WINDOWS AUDIO CHECK" FontSize="18" FontWeight="Bold" Margin="0,0,0,12"/>
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="1.5*"/><ColumnDefinition Width="1.5*"/><ColumnDefinition Width="1.1*"/><ColumnDefinition Width="1.1*"/></Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="DIGIRIG RX / Recording" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="DIGIRIG TX / Playback" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="2" Text="AGC" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="3" Text="Enhancements" FontWeight="Bold"/>
+                </Grid>
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="1.5*"/><ColumnDefinition Width="1.5*"/><ColumnDefinition Width="1.1*"/><ColumnDefinition Width="1.1*"/></Grid.ColumnDefinitions>
+                    <TextBlock x:Name="RxText" Grid.Column="0" Text="—"/>
+                    <TextBlock x:Name="TxText" Grid.Column="1" Text="—"/>
+                    <TextBlock x:Name="AgcText" Grid.Column="2" Text="Not exposed / inspect Custom tab"/>
+                    <TextBlock x:Name="EnhText" Grid.Column="3" Text="—"/>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                    <Button Content="Fix Enhancements" Click="FixEnhancements_Click"/>
+                    <Button Content="Open Windows Audio Properties" Click="OpenProperties_Click"/>
+                    <Button Content="Fix All / Refresh" Click="FixAll_Click"/>
+                    <Button Content="Rename DigiRig Audio" Click="RenameDigiRig_Click"/>
+                </StackPanel>
+                <Border x:Name="AudioDefaultWarningPanel" Background="#4A241F" BorderBrush="{StaticResource BadBrush}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,12,0,0" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="⚠ WINDOWS DEFAULT AUDIO WARNING" FontWeight="Bold" Foreground="{StaticResource BadBrush}"/>
+                        <TextBlock x:Name="AudioDefaultWarningText" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+                <TextBlock x:Name="AudioMessage" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="4,8,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="3" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="TX / OUTPUT" FontSize="18" FontWeight="Bold"/>
+                                        <Grid Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="52"/></Grid.ColumnDefinitions>
+                        <Slider x:Name="OutputLevelSlider" Grid.Column="0" Minimum="0" Maximum="100" Value="50"
+                                TickFrequency="10" IsSnapToTickEnabled="False" ValueChanged="OutputLevelSlider_ValueChanged"/>
+                        <TextBlock x:Name="OutputLevelValue" Grid.Column="1" Text="50%" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <TextBlock Text="LEFT — Radio audio" FontSize="12" Margin="0,2,0,0"/>
+                    <ProgressBar x:Name="OutputLeftMeter" Minimum="0" Maximum="100" Height="16" Margin="0,2,0,4" Background="#20252B" Foreground="#4CAF50"/>
+                    <TextBlock Text="RIGHT — VOX / PTT trigger audio" FontSize="12" Margin="0,2,0,0"/>
+                    <ProgressBar x:Name="OutputRightMeter" Minimum="0" Maximum="100" Height="16" Margin="0,2,0,4" Background="#20252B" Foreground="#E6A23C"/>
+                    <TextBlock x:Name="TxAudioStatus" Text="TX audio: idle" Foreground="{StaticResource MutedBrush}" FontSize="12" Margin="0,2,0,0"/>
+                    
+                    <Separator Margin="0,14,0,10"/>
+                    <TextBlock Text="RX / INPUT" FontWeight="Bold"/>
+                    <TextBlock Text="DigiRig In → computer speakers" Foreground="{StaticResource MutedBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,6"/>
+                    <Grid Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="52"/></Grid.ColumnDefinitions>
+                        <Slider x:Name="InputLevelSlider" Grid.Column="0" Minimum="0" Maximum="100" Value="50"
+                                TickFrequency="10" IsSnapToTickEnabled="False" ValueChanged="InputLevelSlider_ValueChanged"/>
+                        <TextBlock x:Name="InputLevelValue" Grid.Column="1" Text="50%" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ProgressBar x:Name="InputMeter" Minimum="0" Maximum="100" Height="20" Margin="0,2,0,8" Background="#20252B" Foreground="#4CAF50"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Button Content="Start Input Monitor" Click="StartMonitor_Click"/>
+                        <Button Content="Stop Input Monitor" Click="StopMonitor_Click"/>
+                    </StackPanel>
+                    <TextBlock x:Name="MonitorStatus" Text="Input monitor stopped" Foreground="{StaticResource MutedBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                <Border Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="PTT TEST" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="GPIO3 / C-Media HID" Margin="0,8,0,2"/>
+                        <TextBlock Text="PTT TEST directly asserts GPIO3 / C-Media HID; it does not use the DigiRig right-channel VOX." Foreground="{StaticResource MutedBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Duration:" VerticalAlignment="Center"/>
+                            <TextBox x:Name="PttSeconds" Text="3.0" Width="70" Margin="8,4"/>
+                            <TextBlock Text="seconds" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button x:Name="TestToneButton" Content="TEST TONE" Click="TestTone_Click" FontSize="16" FontWeight="Bold" Width="145" HorizontalAlignment="Left"/>
+                            <Button x:Name="TestPttButton" Content="PTT TEST" Click="TestPtt_Click" FontSize="18" FontWeight="Bold" Width="145" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="TestToneStatus" Text="Test tone off" Foreground="{StaticResource MutedBrush}" Margin="4,8,0,0"/>
+                        <TextBlock x:Name="PttStatus" Text="GPIO3 PTT: OFF" Foreground="{StaticResource MutedBrush}" Margin="4,4,0,0"/>
+                        <TextBlock x:Name="VoxStatus" Text="Right-channel VOX: inactive" Foreground="{StaticResource MutedBrush}" Margin="4,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="CatPanel" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18">
+                    <StackPanel>
+                        <TextBlock Text="CAT CONTROL" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="92"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="COM Port" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="ComPortComboBox" Grid.Row="0" Grid.Column="1" Height="28" Margin="0,2" Background="White">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" Foreground="Black"/></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="CAT Speed" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="CatSpeedComboBox" Grid.Row="1" Grid.Column="1" Height="28" Margin="0,2" Background="White">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" Foreground="Black"/></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Data Bits" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="DataBitsComboBox" Grid.Row="2" Grid.Column="1" Height="28" Margin="0,2" Background="White">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" Foreground="Black"/></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Stop Bits" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="StopBitsComboBox" Grid.Row="3" Grid.Column="1" Height="28" Margin="0,2" Background="White">
+                                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" Foreground="Black"/></DataTemplate></ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+                        <Separator Margin="0,12,0,10"/>
+                        <TextBlock Text="CAT Test" FontWeight="Bold"/>
+                        <Grid Margin="0,6,0,8">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="92"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Command" VerticalAlignment="Center"/>
+                            <TextBox x:Name="CatCommandTextBox" Grid.Column="1" Text="ID;" Height="28" Padding="5,3" Foreground="Black" Background="White"/>
+                        </Grid>
+                        <Button x:Name="TestCatButton" Content="TEST CAT" Click="TestCat_Click" Width="145" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="CatStatusText" Text="Status: Ready" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="4,8,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="4" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18">
+                <StackPanel>
+                    <TextBlock Text="DETECTED AUDIO DEVICES" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="Recording devices" FontWeight="Bold"/>
+                    <ItemsControl x:Name="InputsList" Margin="0,4,0,10"/>
+                    <TextBlock Text="Playback devices" FontWeight="Bold"/>
+                    <ItemsControl x:Name="OutputsList" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="18">
+                <StackPanel>
+                    <TextBlock Text="DETECTED COM DEVICES" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="Use the USB details below to identify the COM port that belongs to your DigiRig Mobile." Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                    <ItemsControl x:Name="ComDevicesList" Margin="0,4,0,0"/>
+                    <TextBlock x:Name="ComDevicesEmptyText" Text="No COM devices detected" Foreground="{StaticResource MutedBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+    </ScrollViewer>
+</Window>
