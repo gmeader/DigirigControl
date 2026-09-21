@@ -114,7 +114,12 @@ Radio configuration is stored externally in:
 cat-profiles.json
 ```
 
-This allows radio definitions to be added or modified without rebuilding the application.
+This allows radio definitions to be added or modified without rebuilding the application. Here are the CATprotocols:
+
+* ascii  → testCommand is sent as ASCII characters
+* civ    → Icom CI-V command handling
+* hex    → testCommand contains space-separated hexadecimal bytes
+* none
 
 A profile can contain fields such as:
 
@@ -128,6 +133,26 @@ A profile can contain fields such as:
   "dataBits": 8,
   "stopBits": 1,
   "pttMethod": "rts"
+},
+{
+  "model": "FT-857D",
+  "CATprotocol": "hex",
+  "civAddress": "",
+  "baud": 4800,
+  "dataBits": 8,
+   "stopBits": 1,
+  "pttMethod": "rts",
+  "testCommand": "00 00 00 00 03"
+},
+{
+  "model": "TS-590S / TS-590SG",
+  "CATprotocol": "ascii",
+  "civAddress": "",
+  "baud": 9600,
+  "dataBits": 8,
+   "stopBits": 1,
+  "pttMethod": "rts",
+  "testCommand": "ID;"
 }
 ```
 
