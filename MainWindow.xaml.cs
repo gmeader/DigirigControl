@@ -159,7 +159,10 @@ public partial class MainWindow : Window
             }
             else
             {
-                string printable = (protocol.Equals("civ", StringComparison.OrdinalIgnoreCase) || protocol.Equals("icom-civ", StringComparison.OrdinalIgnoreCase))
+                bool binaryProtocol = protocol.Equals("civ", StringComparison.OrdinalIgnoreCase) ||
+                                      protocol.Equals("icom-civ", StringComparison.OrdinalIgnoreCase) ||
+                                      protocol.Equals("hex", StringComparison.OrdinalIgnoreCase);
+                string printable = binaryProtocol
                     ? BitConverter.ToString(response).Replace("-", " ")
                     : System.Text.Encoding.ASCII.GetString(response).Replace("\r", " ").Replace("\n", " ").Trim();
                 CatStatusText.Text = $"Status: CAT response received — {printable}";
@@ -273,9 +276,9 @@ public partial class MainWindow : Window
         var warnings = new List<string>();
 
         if (badPlayback)
-            warnings.Add("DigiRig Out is set as the Windows Default playback device. Use Windows Audio Properties to assign your computer speakers/headphones as the Playback Default. Then click Refresh. Otherwise normal Windows alert sounds can be routed to the radio.");
+            warnings.Add("DigiRig Out is the Windows default playback device. Set your computer speakers/headphones as the default playback device. Otherwise normal Windows audio — including the Input Monitor — can be routed to the radio.");
         if (badRecording)
-            warnings.Add("DigiRig In is the Windows default recording device. Use Windows Audio Properties to assign your normal microphone/input as the Default recording device; applications that need DigiRig In should select it explicitly.");
+            warnings.Add("DigiRig In is the Windows default recording device. Set your normal microphone/input as the default recording device; applications that need DigiRig In should select it explicitly.");
 
         AudioDefaultWarningText.Text = string.Join("\n", warnings);
         AudioDefaultWarningPanel.Visibility = warnings.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -390,7 +393,7 @@ public partial class MainWindow : Window
         if (rx == null) { MonitorStatus.Text = "DigiRig RX not found."; return; }
         if (IsDigiRigDefaultPlayback())
         {
-            MonitorStatus.Text = "Input Monitor blocked: DigiRig Out is set as the Windows Default playback device. Use Windows Audio Properties to assign your computer speakers/headphones as the Playback Default.";
+            MonitorStatus.Text = "Input Monitor blocked: DigiRig Out is the Windows default playback device. Select your computer speakers/headphones as the Windows default, then Refresh.";
             MonitorStatus.Foreground = (Brush)FindResource("BadBrush");
             return;
         }

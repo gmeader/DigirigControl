@@ -14,14 +14,14 @@
           "testCommand": "FA;"
         },
         {
-          "model": "FT-991A",
-          "CATprotocol": "ascii",
+          "model": "FT-857D",
+          "CATprotocol": "hex",
           "civAddress": "",
           "baud": 4800,
           "dataBits": 8,
           "stopBits": 1,
           "pttMethod": "rts",
-          "testCommand": "FA;"
+          "testCommand": "00 00 00 00 03"
         }
       ]
     },
